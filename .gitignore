@@ -1,0 +1,15 @@
+# Python and tooling
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local credentials and environment files
+.env
+.env.*
+
+# Generated run-level evidence and recomputed summaries
+results/generated/
+results/faults/generated/

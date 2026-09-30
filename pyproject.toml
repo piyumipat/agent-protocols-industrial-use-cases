@@ -1,0 +1,36 @@
+[project]
+name = "agent-protocols-industrial-use-cases"
+version = "0.1.0"
+description = "Public implementation and experiment materials for an industrial agent-coordination study"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "agent-protocols-reference-kit[all]",
+    "mcp[cli]==2.1.1",
+]
+
+[tool.uv.sources]
+agent-protocols-reference-kit = { git = "https://github.com/piyumipat/agent-protocols-reference-kit.git", rev = "v0.2.0" }
+
+[dependency-groups]
+dev = [
+    "cryptography",
+    "mypy",
+    "pytest",
+    "pytest-asyncio>=1.4.0",
+    "pytest-timeout>=2.4.0",
+    "ruff",
+    "types-protobuf",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["src"]
+timeout = 20
+
+[tool.mypy]
+strict = true
+
+[build-system]
+requires = ["uv_build>=0.12.12,<0.13"]
+build-backend = "uv_build"

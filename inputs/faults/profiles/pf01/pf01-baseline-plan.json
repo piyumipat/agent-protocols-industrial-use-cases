@@ -1,0 +1,40 @@
+{
+  "kind": "fault_run_plan",
+  "schema_version": 1,
+  "task_id": "fault-task-001",
+  "fault": "pf01",
+  "round": "baseline",
+  "protocols": [
+    "a2a",
+    "anp",
+    "agora"
+  ],
+  "repetitions": 5,
+  "attempt": 1,
+  "reference_kit_version": "0.2.0",
+  "reference_kit_revision": "1222b3792c1d347d949b7184d5131a0551ff97bb",
+  "use_case_revision": "7fcdb4e98222d239df45fe18c43134179b302c33+source-tree-sha256:b5b76e52436a162be7b1a12fc4392c30477d4e74c4b41e0319bd99996922a2c2",
+  "injection_boundary": "configured_endpoint_before_discovery",
+  "enabled_controls": {
+    "a2a": [
+      "task_ledger",
+      "correlated_event_recording",
+      "signed_agent_cards"
+    ],
+    "anp": [
+      "task_ledger",
+      "correlated_event_recording"
+    ],
+    "agora": [
+      "task_ledger",
+      "correlated_event_recording"
+    ]
+  },
+  "parameters": {
+    "agora": {
+      "protocol_source_url": "https://agoraprotocol.org/docs/protocol/specification",
+      "protocol_source_snapshot": "inputs/faults/profiles/pf01/manifests/agora-working-standard-web-capture.txt",
+      "protocol_source_snapshot_sha256": "bebe0985db954704aac2c5731c30c09ef3b10c19179a2f9be95b2debcb354f8e"
+    }
+  }
+}

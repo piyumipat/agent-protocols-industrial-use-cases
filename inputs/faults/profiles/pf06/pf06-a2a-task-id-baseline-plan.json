@@ -1,0 +1,27 @@
+{
+  "kind": "fault_run_plan",
+  "schema_version": 1,
+  "task_id": "fault-task-001",
+  "fault": "pf06",
+  "round": "baseline",
+  "protocols": [
+    "a2a"
+  ],
+  "repetitions": 5,
+  "attempt": 1,
+  "reference_kit_version": "0.2.0",
+  "reference_kit_revision": "1222b3792c1d347d949b7184d5131a0551ff97bb",
+  "use_case_revision": "source-tree-sha256:ab051523a0543bf6a479969925da3b64bf83d18ca32ce4aa597cd4e467566aed",
+  "injection_boundary": "durable_acceptance_before_final_response",
+  "enabled_controls": {
+    "a2a": [
+      "task_ledger",
+      "correlated_event_recording"
+    ]
+  },
+  "parameters": {
+    "a2a": {
+      "task_id_delivery_barrier": true
+    }
+  }
+}

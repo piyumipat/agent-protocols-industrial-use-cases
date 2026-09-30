@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "run_id": "uc003-anp-dynamic-pilot",
+  "task_id": "task-anp-dynamic-001",
+  "protocol": "anp",
+  "condition": "dynamic",
+  "fleet_size": 3,
+  "rounds": 1,
+  "random_seed": 3101,
+  "response_deadline_seconds": 5.0,
+  "inventory_fixture": "fixtures/inventory.json",
+  "executor_fixture": "fixtures/executors.json",
+  "executor_ids": [
+    "executor-01",
+    "executor-02",
+    "executor-03"
+  ],
+  "introduced_executor_id": "executor-02",
+  "endpoints": {
+    "executor-01": "https://localhost:8151",
+    "executor-02": "https://localhost:8152",
+    "executor-03": "https://localhost:8153"
+  },
+  "service_ports": {
+    "executor-01": 8151,
+    "executor-02": 8152,
+    "executor-03": 8153,
+    "mcp_inventory": 8251,
+    "mcp_status": 8252,
+    "mcp_outcome": 8253
+  },
+  "endpoint_source": "simulated_introduction",
+  "protocol_mode": "native",
+  "enabled_controls": [
+    "response_deadline",
+    "deterministic_winner",
+    "task_ledger",
+    "endpoint_allowlist",
+    "external_endpoint_introduction",
+    "did_wba_authentication",
+    "did_verification"
+  ],
+  "reference_kit_version": "0.2.0",
+  "reference_kit_commit": "1222b3792c1d347d949b7184d5131a0551ff97bb",
+  "use_case_commit": "1418fe56f6f93cfc5b60fa1926e9c26146fe66a3",
+  "lockfile_sha256": "23c139329f56cf338a3f0d508d85868c327a85baee0705e366efc8c137b9090e"
+}

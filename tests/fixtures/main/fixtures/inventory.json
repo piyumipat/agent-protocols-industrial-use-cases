@@ -1,0 +1,9 @@
+{
+  "parts": [
+    {
+      "part_id": "part-42",
+      "available_quantity": 10,
+      "source_zone": "zone-a"
+    }
+  ]
+}

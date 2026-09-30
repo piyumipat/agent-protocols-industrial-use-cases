@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "run_id": "uc003-agora-dynamic-pilot",
+  "task_id": "task-agora-dynamic-001",
+  "protocol": "agora",
+  "condition": "dynamic",
+  "fleet_size": 3,
+  "rounds": 1,
+  "random_seed": 2001,
+  "response_deadline_seconds": 5.0,
+  "inventory_fixture": "main/fixtures/inventory.json",
+  "executor_fixture": "main/fixtures/executors.json",
+  "executor_ids": [
+    "executor-01",
+    "executor-02",
+    "executor-03"
+  ],
+  "introduced_executor_id": "executor-02",
+  "endpoints": {
+    "executor-01": "http://127.0.0.1:8111/agora",
+    "executor-02": "http://127.0.0.1:8112/agora",
+    "executor-03": "http://127.0.0.1:8113/agora"
+  },
+  "service_ports": {
+    "executor-01": 8111,
+    "executor-02": 8112,
+    "executor-03": 8113,
+    "mcp_inventory": 8211,
+    "mcp_status": 8212,
+    "mcp_outcome": 8213
+  },
+  "endpoint_source": "simulated_introduction",
+  "protocol_mode": "proposal",
+  "enabled_controls": [
+    "response_deadline",
+    "deterministic_winner",
+    "task_ledger",
+    "endpoint_allowlist",
+    "external_endpoint_introduction",
+    "agora_protocol_proposal"
+  ],
+  "reference_kit_version": "0.1.0",
+  "reference_kit_commit": "a7cde178274d8ba1f5eec1cfcf6869442741c2c4",
+  "use_case_commit": "d6bd8d9a748fac84dd9f4a76b49a80e8875f76da",
+  "lockfile_sha256": "8dfd223621982b799794084af0f51f7d3df29a0ac15ab8bf85d10d3dfbc01827"
+}

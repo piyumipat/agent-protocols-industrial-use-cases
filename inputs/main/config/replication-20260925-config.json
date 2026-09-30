@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "status": "frozen",
+  "frozen_on": "2026-09-25",
+  "revision": 1,
+  "revision_reason": "Independent rerun of the main matrix in a separate evidence directory using the current implementation and reference kit v0.2.0.",
+  "use_case_commit": "d6bd8d9a748fac84dd9f4a76b49a80e8875f76da",
+  "cells": [
+    "config/manifests/uc003-a2a-stable-pilot-replication-20260925.json",
+    "config/manifests/uc003-a2a-dynamic-pilot-replication-20260925.json",
+    "config/manifests/uc003-anp-stable-pilot-replication-20260925.json",
+    "config/manifests/uc003-anp-dynamic-pilot-replication-20260925.json",
+    "config/manifests/uc003-agora-stable-pilot-replication-20260925.json",
+    "config/manifests/uc003-agora-dynamic-pilot-replication-20260925.json"
+  ],
+  "fleet_sizes": [
+    1,
+    3,
+    5,
+    10
+  ],
+  "warmup_runs": 1,
+  "measured_runs": 10,
+  "rounds_per_run": 5,
+  "response_deadline_seconds": 5.0,
+  "execution_order_seed": 30001,
+  "randomization": "balanced_by_protocol_and_condition",
+  "controls": [
+    "schema_validation",
+    "response_deadline",
+    "deterministic_winner",
+    "task_ledger",
+    "endpoint_allowlist",
+    "correlated_event_recording"
+  ],
+  "replication_of": "full-experiment-v2",
+  "replication_note": "Current dependency and implementation versions differ from the original; original results remain untouched."
+}

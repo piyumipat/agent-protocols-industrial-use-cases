@@ -1,0 +1,39 @@
+{
+  "kind": "fault_run_plan",
+  "schema_version": 1,
+  "task_id": "fault-task-001",
+  "fault": "pf06",
+  "round": "baseline",
+  "protocols": [
+    "a2a",
+    "anp",
+    "agora"
+  ],
+  "repetitions": 5,
+  "attempt": 1,
+  "reference_kit_version": "0.2.0",
+  "reference_kit_revision": "1222b3792c1d347d949b7184d5131a0551ff97bb",
+  "use_case_revision": "source-tree-sha256:d8e3fec66c0cf704fa2d7d0e8a3d2019c62ae23e1e26c820fffd41f8c43081b2",
+  "injection_boundary": "durable_acceptance_before_final_response",
+  "enabled_controls": {
+    "a2a": [
+      "task_ledger",
+      "correlated_event_recording"
+    ],
+    "anp": [
+      "task_ledger",
+      "correlated_event_recording"
+    ],
+    "agora": [
+      "task_ledger",
+      "correlated_event_recording"
+    ]
+  },
+  "parameters": {
+    "agora": {
+      "protocol_source_url": "https://agoraprotocol.org/docs/protocol/specification",
+      "protocol_source_snapshot": "inputs/faults/profiles/pf06/manifests/agora-working-standard-web-capture.txt",
+      "protocol_source_snapshot_sha256": "bebe0985db954704aac2c5731c30c09ef3b10c19179a2f9be95b2debcb354f8e"
+    }
+  }
+}

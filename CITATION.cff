@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software or its experiment materials, please cite it as below."
+title: "Agent Protocols Industrial Use Cases"
+authors:
+  - family-names: Pathirathna
+    given-names: Piyumi
+  - family-names: Yazdani
+    given-names: Parva
+  - family-names: Thron
+    given-names: Mario
+license: MIT
+repository-code: "https://github.com/piyumipat/agent-protocols-industrial-use-cases"

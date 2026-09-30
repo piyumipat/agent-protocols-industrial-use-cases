@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "uc003-agora-stable-pilot",
+  "task_id": "task-agora-stable-001",
+  "protocol": "agora",
+  "condition": "stable",
+  "fleet_size": 3,
+  "rounds": 1,
+  "random_seed": 2101,
+  "response_deadline_seconds": 5.0,
+  "inventory_fixture": "main/fixtures/inventory.json",
+  "executor_fixture": "main/fixtures/executors.json",
+  "executor_ids": ["executor-01", "executor-02", "executor-03"],
+  "introduced_executor_id": null,
+  "endpoints": {
+    "executor-01": "http://127.0.0.1:8131/agora",
+    "executor-02": "http://127.0.0.1:8132/agora",
+    "executor-03": "http://127.0.0.1:8133/agora"
+  },
+  "service_ports": {
+    "executor-01": 8131,
+    "executor-02": 8132,
+    "executor-03": 8133,
+    "mcp_inventory": 8231,
+    "mcp_status": 8232,
+    "mcp_outcome": 8233
+  },
+  "endpoint_source": "configuration",
+  "protocol_mode": "pre_shared",
+  "enabled_controls": ["response_deadline", "deterministic_winner", "task_ledger", "endpoint_allowlist", "agora_protocol_document_pre_shared"],
+  "reference_kit_version": "0.1.0",
+  "reference_kit_commit": "a7cde178274d8ba1f5eec1cfcf6869442741c2c4",
+  "use_case_commit": "d6bd8d9a748fac84dd9f4a76b49a80e8875f76da",
+  "lockfile_sha256": "8dfd223621982b799794084af0f51f7d3df29a0ac15ab8bf85d10d3dfbc01827"
+}

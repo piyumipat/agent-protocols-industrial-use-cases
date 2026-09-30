@@ -1,0 +1,67 @@
+{
+  "kind": "fault_run_plan",
+  "schema_version": 1,
+  "task_id": "fault-task-001",
+  "fault": "pf08",
+  "round": "baseline",
+  "protocols": [
+    "a2a",
+    "anp",
+    "agora"
+  ],
+  "repetitions": 5,
+  "attempt": 1,
+  "reference_kit_version": "0.2.0",
+  "reference_kit_revision": "1222b3792c1d347d949b7184d5131a0551ff97bb",
+  "use_case_revision": "source-tree-sha256:8be92666409a1321d04b84a50cb04ef5d3db9f7adac7fc70987e734fd680c2d2",
+  "injection_boundary": "authenticated_award_before_business_dispatch",
+  "enabled_controls": {
+    "a2a": [
+      "task_ledger",
+      "correlated_event_recording",
+      "external_caller_authentication",
+      "bid_only_permission_policy"
+    ],
+    "anp": [
+      "task_ledger",
+      "correlated_event_recording",
+      "did_wba_caller_authentication",
+      "bid_only_permission_policy"
+    ],
+    "agora": [
+      "task_ledger",
+      "correlated_event_recording",
+      "external_identity_layer",
+      "bid_only_permission_policy"
+    ]
+  },
+  "parameters": {
+    "a2a": {
+      "logical_caller_identity": "observer-01",
+      "caller_authentication": "user_side_signed_jwt_fixture",
+      "permission_rule": {
+        "request_bid": "allow",
+        "award": "deny"
+      }
+    },
+    "anp": {
+      "logical_caller_identity": "observer-01",
+      "caller_authentication": "did_wba",
+      "permission_rule": {
+        "request_bid": "allow",
+        "award": "deny"
+      }
+    },
+    "agora": {
+      "logical_caller_identity": "observer-01",
+      "caller_authentication": "external_signed_jwt_fixture",
+      "permission_rule": {
+        "request_bid": "allow",
+        "award": "deny"
+      },
+      "protocol_source_url": "https://agoraprotocol.org/docs/protocol/specification",
+      "protocol_source_snapshot": "inputs/faults/profiles/pf08/manifests/agora-working-standard-web-capture.txt",
+      "protocol_source_snapshot_sha256": "bebe0985db954704aac2c5731c30c09ef3b10c19179a2f9be95b2debcb354f8e"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "executors": [
+    {
+      "executor_id": "executor-01",
+      "available": true,
+      "position": "aisle-1",
+      "energy_level": 82.0
+    },
+    {
+      "executor_id": "executor-02",
+      "available": true,
+      "position": "aisle-4",
+      "energy_level": 68.0
+    },
+    {
+      "executor_id": "executor-03",
+      "available": false,
+      "position": "charging-bay",
+      "energy_level": 31.0
+    },
+    {
+      "executor_id": "executor-04",
+      "available": true,
+      "position": "aisle-2",
+      "energy_level": 76.0
+    },
+    {
+      "executor_id": "executor-05",
+      "available": true,
+      "position": "aisle-5",
+      "energy_level": 64.0
+    },
+    {
+      "executor_id": "executor-06",
+      "available": true,
+      "position": "aisle-3",
+      "energy_level": 88.0
+    },
+    {
+      "executor_id": "executor-07",
+      "available": true,
+      "position": "staging-area",
+      "energy_level": 59.0
+    },
+    {
+      "executor_id": "executor-08",
+      "available": false,
+      "position": "maintenance-bay",
+      "energy_level": 45.0
+    },
+    {
+      "executor_id": "executor-09",
+      "available": true,
+      "position": "aisle-6",
+      "energy_level": 71.0
+    },
+    {
+      "executor_id": "executor-10",
+      "available": true,
+      "position": "dispatch-zone",
+      "energy_level": 93.0
+    }
+  ]
+}

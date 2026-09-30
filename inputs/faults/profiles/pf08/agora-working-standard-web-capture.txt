@@ -1,0 +1,330 @@
+Standard · Agora Protocol (https://agoraprotocol.org/docs/protocol/specification)
+citeturn25view0 [wordlim: 200] Crawled: 2 days ago; Content type: text/html; Source: open({"ref_id":"https://agoraprotocol.org/docs/protocol/specification","lineno":null}); Total lines: 415
+L0: cite0†Skip to main content L1: 
+L2:   * cite1†Specification L3: 
+L4:     * cite1†Beginner-Friendly Specification L5:     * cite2†Standard L6: 
+L7: [Button: On this page]
+L8: 
+L9: # Standard
+L10: 
+L11: Below is the Working Standard for the Agora Protocol, structured in a style similar to IETF RFCs. It includes the sections outlined previously, along with normative language (per cite3†RFC 2119†www.rfc-editor.org and cite4†RFC 8174†www.rfc-editor.org ). While this document follows a typical RFC format, it should be understood as a draft.
+L12: 
+L13: * * *
+L14: # Agora Protocol for Two-Party JSON Exchanges
+L15: 
+L16: ### Status of This Memocite5†​ L17: 
+L18: This document is intended to be a Proposed Standard. Distribution of this memo is unlimited.
+L19: 
+L20: ### Copyright Noticecite6†​ L21: 
+L22: (C) 2025 Samuele Marro.
+L23: 
+L24: * * *
+L25: ## 1. Abstractcite7†​ L26: 
+L27: This document specifies the Agora Protocol, a lightweight JSON-based framework for two-party exchanges (client and server). The protocol accommodates both single-round (stateless) and multi-round (stateful) conversations, supports optional strict “Protocol Documents” identified by a SHA1 hash, and defines a clear separation of transport-level, Agora-level, and protocol-level errors. The primary goals are simplicity, extensibility, and clarity.
+L28: 
+L29: * * *
+L30: ## 2. Introductioncite8†​ L31: 
+L32: Systems often need a simple way to exchange structured data with optional support for higher-level conventions (e.g., domain-specific request/response formats). The Agora Protocol provides:
+L33: 
+L34:   * A consistent JSON envelope for client requests and server replies.
+L35:   * Optional in-conversation state (multi-round) via a conversation identifier.
+L36:   * Protocol Document references (via `protocolHash`) to impose additional constraints on message bodies.
+L37: This protocol is agnostic to underlying application logic, letting users handle domain-specific details within the message body or via Protocol Documents. It requires HTTPS to ensure confidentiality but is otherwise minimal in security assumptions.
+L38: ### 2.1 Scopecite9†​ L39: 
+L40:   * In Scope:
+L41: 
+L42:     * JSON message format and structure.
+L43:     * Error handling conventions (transport-level vs. application-level).
+L44:     * Support for protocol documents and conversation state management.
+L45:   * Out of Scope:
+L46: 
+L47:     * Authentication, authorization, or key management.
+L48:     * Negotiation mechanisms beyond providing a well-known endpoint for protocol discovery.
+L49:     * Advanced privacy requirements.
+L50: 
+L51: * * *
+L52: ## 3. Requirements Languagecite10†​ L53: 
+L54: The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in cite3†RFC 2119†www.rfc-editor.org and cite4†RFC 8174†www.rfc-editor.org when, and only when, they appear in all capitals, as shown here.
+L55: 
+L56: * * *
+L57: ## 4. Terminologycite11†​ L58: 
+L59:   * Client: The party initiating a request (formerly “Alice”).
+L60:   * Server: The party receiving the request and generating a response (formerly “Bob”).
+L61:   * Conversation: A multi-round interaction sequence, uniquely identified by a `conversationId`.
+L62:   * Protocol Document: A text file that defines additional, domain-specific request/response structures. It is identified by a unique SHA1 hash.
+L63:   * Status: A JSON field in the response that can be either `"success"` or `"failure"`.
+L64: * * *
+L65: ## 5. Overview of the Agora Protocolcite12†​ L66: 
+L67: ### 5.1 Transport Requirementscite13†​ L68: 
+L69: All Agora exchanges MUST occur over HTTPS using HTTP `POST`. Implementations MUST set the `Content-Type` header to `application/json` for both requests and responses. Additional HTTP headers (e.g., `Accept`, `Accept-Charset`) MAY be used but are not mandated by this specification.
+L70: ### 5.2 Basic Exchange Flowcite14†​ L71: 
+L72:   1. The Client sends an HTTPS `POST` request to the Server’s base URL (e.g., `https://api.example.com/agora`), providing a JSON body that MUST include at least:
+L73: 
+L74:      * `body`: unstructured or protocol-defined content.
+L75:      * Optional fields such as `protocolHash`, `multiround`, etc.
+L76:   2. The Server MUST respond with a JSON body that includes:
+L77:      * `status`: either `"success"` or `"failure"`.
+L78:      * If `status` is `"success"`, it MAY include a `body` field for the response and other optional fields.
+L79:      * If `status` is `"failure"`, the Server MUST include an `error` field describing the failure.
+L80: 
+L81: * * *
+L82: ## 6. Message Structurecite15†​ L83: ### 6.1 Request Fieldscite16†​ L84: 
+L85: A minimal Agora request JSON object MAY contain the following fields:
+L86: 
+L87:   * `body` (string or object):
+L88: The core of the request. Its format MAY be arbitrary if no protocol is used, or constrained by a Protocol Document.
+L89: 
+L90:   * `protocolHash` (string or `null`):
+L91: The SHA1 hash identifying a Protocol Document.
+L92:     * If absent or `null`, the request uses no formal protocol.
+L93:   * `protocolSources` (array of strings or optional format):
+L94: Contains the full text or references to the Protocol Document.
+L95: 
+L96:     * MAY be omitted if the Server is known to support the specified hash.
+L97:   * `multiround` (boolean):
+L98: If `true`, requests initiation of a multi-round conversation.
+L99: 
+L100:   * Additional Fields:
+L101: Extra fields MAY be present and MUST be ignored by the Server unless explicitly recognized.
+L102: ### 6.2 Response Fieldscite17†​ L103: 
+L104: A minimal Agora response JSON object MAY contain the following fields:
+L105: 
+L106:   * `status` (string):
+L107: Either `"success"` or `"failure"`.
+L108: 
+L109:   * `body` (string or object):
+L110: Present if and only if `status` is `"success"`. The Server’s main response content.
+L111: 
+L112:   * `error` (string):
+L113: Present if and only if `status` is `"failure"`. Describes an Agora-level error condition.
+L114: 
+L115:   * `conversationId` (string):
+L116: Present if initiating or continuing a multi-round conversation.
+L117:   * `conversationExpires` (integer):
+L118: A Unix timestamp indicating the conversation’s expiration. Present only if multi-round mode is in effect.
+L119: 
+L120:   * Additional Fields:
+L121: MAY appear for extended metadata or logging but are not standardized.
+L122: ### 6.3 Example Message Exchangecite18†​ L123: 
+L124: #### 6.3.1 Single-Round Examplecite19†​ L125: 
+L126: Request (Client -> Server, no protocol, single-round):
+L127: 
+L128:     `{
+L129:       "protocolHash": null,
+L130:       "body": "Hello! What is the weather tomorrow in London?"
+L131:     }
+L132:     `
+L133: 
+L134: Response (Server -> Client):
+L135: 
+L136:     `{
+L137:       "status": "success",
+L138:       "body": "It will be cloudy with a 30% chance of precipitation."
+L139:     }
+L140:     `
+L141: #### 6.3.2 Multi-Round Examplecite20†​ L142: 
+L143: Request (Client -> Server, multi-round initiation):
+L144: 
+L145:     `{
+L146:       "protocolHash": null,
+L147:       "body": "Hello! I'd like to ask multiple questions.",
+L148:       "multiround": true
+L149:     }
+L150:     `
+L151: 
+L152: Response (Server -> Client):
+L153: 
+L154:     `{
+L155:       "status": "success",
+L156:       "body": "Multi-round conversation initiated.",
+L157:       "conversationId": "abc123xyz",
+L158:       "conversationExpires": 1741910401
+L159:     }
+L160:     `
+L161: 
+L162: * * *
+L163: 
+L164: ## 7. Multi-Round Conversationscite21†​ L165: ### 7.1 Conversation Initializationcite22†​ L166: 
+L167:   * A Client MUST include `"multiround": true` to request multi-round mode.
+L168:   * If the Server approves, it MUST generate a unique `conversationId` and MUST return a `conversationExpires` timestamp.
+L169: ### 7.2 Follow-Up Requestscite23†​ L170: 
+L171: Once a multi-round conversation is established, the Client MUST `POST` subsequent requests to:
+L172: 
+L173:     `{baseURL}/conversations/{conversationId}
+L174:     `
+L175: 
+L176: Follow-up requests MUST NOT include the `protocolHash` if it was set in the original request. Attempting to change the protocol mid-conversation is invalid and MUST be treated as a malformed request by the Server.
+L177: ### 7.3 Conversation Expirationcite24†​ L178: 
+L179:   * The Server MAY set any future timestamp for `conversationExpires`.
+L180:   * After reaching `conversationExpires`, the Server SHOULD return `status: "failure"` and `error: "Conversation expired"` (or similar) if any further requests for that `conversationId` arrive.
+L181:   * The Server MUST NOT allow usage of an expired conversationId.
+L182: 
+L183: * * *
+L184: 
+L185: ## 8. Protocol Documents and Hashingcite25†​ L186: ### 8.1 Protocol Document Formatcite26†​ L187: 
+L188: A Protocol Document is a text file with two parts, separated by a line containing `---`:
+L189: 
+L190:   1. YAML Metadata (top section), containing at least:
+L191: 
+L192:      * `name` (string)
+L193:      * `description` (string)
+L194:      * `multiround` (boolean)
+L195:   2. Specification (freeform text), describing how requests and responses MUST or SHOULD be structured at the application level.
+L196: ### 8.2 SHA1 Hash Identificationcite27†​ L197: 
+L198:   * Implementations MUST use the entire Protocol Document text (including metadata, the `---` separator, and the specification) as input to the SHA1 function.
+L199:   * The resulting 40-character hexadecimal digest MUST serve as the unique protocol identifier in `protocolHash`.
+L200: ### 8.3 Usage of Protocol Hash and Sourcescite28†​ L201: 
+L202:   * When a Client sends `protocolHash`, the Server MUST verify that it supports that protocol.
+L203:   * If the Server does not support it, it MUST return:
+L204: 
+L205:     `{
+L206:       "status": "failure",
+L207:       "error": "Unsupported protocol"
+L208:     }
+L209:     `
+L210: accompanied by HTTP status code 200 (denoting a valid Agora message, but a protocol-level rejection at the Agora layer).
+L211:   * `protocolSources` MAY be included in the request to provide the document text, but the Server MAY ignore it if it already has the document or is not interested.
+L212: 
+L213: * * *
+L214: ## 9. Well-Known Endpointcite29†​ L215: 
+L216: A Server MAY implement:
+L217: 
+L218:     `GET {baseURL}/wellknown
+L219:     `
+L220: The Server MUST return a JSON object where each key is a supported `protocolHash`, and the value is a (non-empty) list of Protocol Document sources. Example:
+L221: 
+L222:     `{
+L223:       "1234abcd...": [
+L224:         "name: Example Protocol\n...",
+L225:         "---\nThis is an example specification..."
+L226:       ],
+L227:       "5678efgh...": [
+L228:         "name: Another Protocol\n...",
+L229:         "---\nSome specification text..."
+L230:       ]
+L231:     }
+L232:     `
+L233: If a protocol is “partially supported,” from Agora’s perspective it is not supported, and MUST NOT appear in the response.
+L234: 
+L235: * * *
+L236: ## 10. Error Handlingcite30†​ L237: 
+L238: ### 10.1 Transport-Level Errorscite31†​ L239: 
+L240: Transport-level errors MUST be indicated using appropriate HTTP status codes. For instance:
+L241: 
+L242:   * `400 Bad Request` for malformed JSON or invalid fields at the HTTP layer.
+L243:   * `404 Not Found` for unknown endpoints or conversation IDs.
+L244:   * `500 Internal Server Error` for server-side faults.
+L245: ### 10.2 Agora-Level Errorscite32†​ L246: 
+L247: When the request is well-formed HTTP and JSON but cannot be processed due to an Agora rule (e.g., unsupported protocol, expired conversation), the Server MUST respond with HTTP 200 and JSON:
+L248: 
+L249:     `{
+L250:       "status": "failure",
+L251:       "error": "<Short error message>"
+L252:     }
+L253:     `
+L254: ### 10.3 Protocol-Level Errorscite33†​ L255: 
+L256: If the request is valid at the Agora level but violates the Protocol Document’s rules (e.g., missing required fields, unsupported domain-specific parameter):
+L257: 
+L258:   * The Server MUST return `status: "success"` (Agora layer is fine).
+L259:   * The Server MUST describe the error inside `body`, or in whatever format the Protocol Document prescribes.
+L260:   * Example:
+L261: 
+L262:     `{
+L263:       "status": "success",
+L264:       "body": {
+L265:         "error": "Invalid date format"
+L266:       }
+L267:     }
+L268:     `
+L269: 
+L270: * * *
+L271: ## 11. Security Considerationscite34†​ L272: 
+L273:   1. HTTPS:
+L274: 
+L275:      * This specification REQUIRES TLS/HTTPS transport. Clients and servers MUST NOT use plain HTTP for production use.
+L276:   2. Conversation ID Security:
+L277: 
+L278:      * Servers SHOULD generate random, hard-to-guess `conversationId` values to mitigate session hijacking.
+L279:   3. Privacy:
+L280:      * The protocol does not place constraints on the data contained in `body`. Implementers SHOULD consider the sensitivity of data exchanged and handle logging or storage accordingly.
+L281:   4. Authentication:
+L282: 
+L283:      * Out of scope. Systems MAY layer on top of the Agora Protocol with tokens, OAuth, etc.
+L284: 
+L285: * * *
+L286: ## 12. Implementation Notes and Examplescite35†​ L287: ### 12.1 Single-Round Implementation Snippetcite36†​ L288: 
+L289:   * Client: (Pseudo-code)
+L290: 
+L291:     `import requests
+L292:     payload = {
+L293:       "protocolHash": None,
+L294:       "body": "What is the temperature?"
+L295:     }
+L296:     r = requests.post("https://api.example.com/agora", json=payload)
+L297:     print(r.json())
+L298:     `
+L299:   * Server: (Pseudo-code)
+L300: 
+L301:     `from flask import Flask, request, jsonify
+L302:     app = Flask(__name__)
+L303:     @app.route("/agora", methods=["POST"])
+L304:     def handle_single_round():
+L305:         data = request.json
+L306:         # Basic validation...
+L307:         if "body" not in data:
+L308:             return jsonify({
+L309:                 "status": "failure",
+L310:                 "error": "Missing field 'body'"
+L311:             }), 200
+L312:         # Return a success with some response
+L313:         return jsonify({
+L314:             "status": "success",
+L315:             "body": "It's 15°C with light rain."
+L316:         }), 200
+L317:     `
+L318: ### 12.2 Multi-Round Conversation Snippetcite37†​ L319: 
+L320:   * Client:
+L321: 
+L322:     1. Initiate conversation (`multiround: true`).
+L323:     2. Parse `conversationId` and `conversationExpires`.
+L324:     3. Send follow-ups to `/conversations/{conversationId}` until expiration.
+L325:   * Server:
+L326: 
+L327:     1. Generate random `conversationId`.
+L328:     2. Store minimal conversation state (if needed).
+L329:     3. Reject requests if the conversation is expired or unknown.
+L330: 
+L331: * * *
+L332: ## 13. IANA Considerationscite38†​ L333: 
+L334: This specification does not create or modify any existing IANA registries.
+L335: If future versions wish to register a well-known URI (e.g., `.well-known/agora`), that would be addressed in an update.
+L336: 
+L337: * * *
+L338: 
+L339: ## 14. Referencescite39†​ L340: ### 14.1 Normative Referencescite40†​ L341: 
+L342:   * cite3†RFC 2119†www.rfc-editor.org , Key words for use in RFCs to Indicate Requirement Levels
+L343:   * cite4†RFC 8174†www.rfc-editor.org , Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words
+L344:   * cite41†RFC 8259†www.rfc-editor.org , The JavaScript Object Notation (JSON) Data Interchange Format
+L345: ### 14.2 Informative Referencescite42†​ L346: 
+L347:   * cite43†RFC 7230†www.rfc-editor.org , Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing
+L348:   * cite44†RFC 7231†www.rfc-editor.org , HTTP/1.1 Semantics and Content
+L349: 
+L350: * * *
+L351: 
+L352: ## 15. Acknowledgmentscite45†​ L353: 
+L354: The authors wish to thank all early implementers and reviewers who contributed feedback to the design of this protocol.
+L355: 
+L356: * * *
+L357: ## Notes on Conformancecite46†​ L358: 
+L359: Implementers MUST ensure their systems strictly follow the requirements on `status` fields, conversation lifecycles, and error handling. Optional features (like the well-known endpoint) remain RECOMMENDED but not mandatory.
+L360: 
+L361: cite47†Edit this page†github.com L362: 
+L363: Last updated on Jan 19, 2025
+L364: 
+L365: cite1†Previous Beginner-Friendly Specification L366:   * cite5†Status of This Memo L367:   * cite6†Copyright Notice L368:   * cite7†1. Abstract L369:   * cite8†2. Introduction L370:     * cite9†2.1 Scope L371:   * cite10†3. Requirements Language L372:   * cite11†4. Terminology L373:   * cite12†5. Overview of the Agora Protocol L374:     * cite13†5.1 Transport Requirements L375:     * cite14†5.2 Basic Exchange Flow L376:   * cite15†6. Message Structure L377:     * cite16†6.1 Request Fields L378:     * cite17†6.2 Response Fields L379:     * cite18†6.3 Example Message Exchange L380:   * cite21†7. Multi-Round Conversations L381:     * cite22†7.1 Conversation Initialization L382:     * cite23†7.2 Follow-Up Requests L383:     * cite24†7.3 Conversation Expiration L384:   * cite25†8. Protocol Documents and Hashing L385:     * cite26†8.1 Protocol Document Format L386:     * cite27†8.2 SHA1 Hash Identification L387:     * cite28†8.3 Usage of Protocol Hash and Sources L388:   * cite29†9. Well-Known Endpoint L389:   * cite30†10. Error Handling L390:     * cite31†10.1 Transport-Level Errors L391:     * cite32†10.2 Agora-Level Errors L392:     * cite33†10.3 Protocol-Level Errors L393:   * cite34†11. Security Considerations L394:   * cite35†12. Implementation Notes and Examples L395:     * cite36†12.1 Single-Round Implementation Snippet L396:     * cite37†12.2 Multi-Round Conversation Snippet L397:   * cite38†13. IANA Considerations L398:   * cite39†14. References L399:     * cite40†14.1 Normative References L400:     * cite42†14.2 Informative References L401:   * cite45†15. Acknowledgments L402:   * cite46†Notes on Conformance L403: Develop
+L404: 
+L405:   * cite48†Guides L406:   * cite1†Protocol L407:   * cite49†Python Reference L408: 
+L409: Find us
+L410: 
+L411:   * cite50†X†x.com L412:   * cite51†GitHub†github.com L413: 
+L414: Copyright © 2025 Agora Protocol
